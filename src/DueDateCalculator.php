@@ -30,10 +30,18 @@ class DueDateCalculator
         }
 
         $addedDays = floor($this->turnaroundHours / 8);
+        $addedHours = $this->turnaroundHours % 8;
 
         $this->submitDay->addWeekdays($addedDays);
 
-        return $this->submitDay;
+        if ( $leftHours = ($addedDays - (17 - $this->submitDay->hour)) <= 0) {
+            $this->submitDay->addHours($addedHours);
+        } else {
+            $this->submitDay->addWeekday()->hour = 9;
+            $this->submitDay->addHours($leftHours);
+        }
+
+        return $this->submitDay->format('Y-m-d H:i:s');
     }
 
 

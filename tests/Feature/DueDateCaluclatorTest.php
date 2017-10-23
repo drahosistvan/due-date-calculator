@@ -70,4 +70,23 @@ class DueDateCalculatorTest extends PHPUnit_Framework_TestCase
             (new DueDateCalculator())->calculate('2017-10-30 15:00:00', 16)
         );
     }
+
+    /** @test */
+    public function calculator_can_calculate_with_days_and_hours()
+    {
+        $this->assertEquals(
+            '2017-10-30 16:00:00',
+            (new DueDateCalculator())->calculate('2017-10-27 15:00:00', 9)
+        );
+
+        $this->assertEquals(
+            '2017-10-31 10:45:00',
+            (new DueDateCalculator())->calculate('2017-10-27 10:45:00', 16)
+        );
+
+        $this->assertEquals(
+            '2017-11-01 13:33:00',
+            (new DueDateCalculator())->calculate('2017-10-30 09:33:00', 20)
+        );
+    }
 }
