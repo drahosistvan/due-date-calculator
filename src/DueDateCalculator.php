@@ -31,12 +31,7 @@ class DueDateCalculator
 
         $addedDays = floor($this->turnaroundHours / 8);
 
-        for ($i = 0; $i<$addedDays; $i++) {
-            $this->submitDay->addDay();
-            if ($this->submitDay->isWeekend()) {
-                $this->submitDay->addDays(2);
-            }
-        }
+        $this->submitDay->addWeekdays($addedDays);
 
         return $this->submitDay;
     }
