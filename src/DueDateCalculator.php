@@ -29,8 +29,17 @@ class DueDateCalculator
             throw new InvalidTurnaroundTimeException('Turnaround time is less than 0');
         }
 
+        $addedDays = floor($this->turnaroundHours / 8);
 
+        for ($i = 0; $i<$addedDays; $i++) {
+            $this->submitDay->addDay();
+            if ($this->submitDay->isWeekend()) {
+                $this->submitDay->addDays(2);
+            }
+        }
 
-        return '';
+        return $this->submitDay;
     }
+
+
 }

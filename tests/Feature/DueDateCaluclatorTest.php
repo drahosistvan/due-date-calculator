@@ -51,4 +51,23 @@ class DueDateCalculatorTest extends PHPUnit_Framework_TestCase
         $this->expectException(InvalidTurnaroundTimeException::class);
         (new DueDateCalculator())->calculate('2017-10-23 15:00:00', -1);
     }
+
+    /** @test */
+    public function calculator_can_calculate_with_days()
+    {
+        $this->assertEquals(
+            '2017-10-30 15:00:00',
+            (new DueDateCalculator())->calculate('2017-10-27 15:00:00', 8)
+        );
+
+        $this->assertEquals(
+            '2017-10-31 15:00:00',
+            (new DueDateCalculator())->calculate('2017-10-27 15:00:00', 16)
+        );
+
+        $this->assertEquals(
+            '2017-11-01 15:00:00',
+            (new DueDateCalculator())->calculate('2017-10-30 15:00:00', 16)
+        );
+    }
 }
