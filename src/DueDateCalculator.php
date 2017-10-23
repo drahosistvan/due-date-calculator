@@ -1,10 +1,8 @@
 <?php
 namespace DueDateCalculator;
 
-use Carbon\Carbon;
-use DueDateCalculator\Exceptions\Validation\InvalidDateFormatException;
-use DueDateCalculator\Exceptions\Validation\InvalidTurnaroundTimeException;
-use DueDateCalculator\Exceptions\Validation\InvalidWorkdayDateException;
+use DueDateCalculator\Validation\SubmitDayValidator;
+use DueDateCalculator\Validation\TurnaroundTimeValidator;
 
 class DueDateCalculator
 {
@@ -13,21 +11,9 @@ class DueDateCalculator
 
     public function calculate($submitDay, $turnaroundHours)
     {
-        try {
-            $this->submitDay = Carbon::createFromFormat('Y-m-d H:i:s', $submitDay);
-        } catch (\Exception $e) {
-            throw new InvalidDateFormatException('Submit date has not valid format');
-        }
-        if ($this->submitDay->isWeekend()) {
-            throw new InvalidWorkdayDateException('Submit day is in weekend');
-        }
-        if ( !($this->submitDay->hour >= 9 && $this->submitDay->hour < 17) ) {
-            throw new InvalidWorkdayDateException('Submit day is out of working hours');
-        }
-        $this->turnaroundHours = $turnaroundHours;
-        if ($this->turnaroundHours < 0) {
-            throw new InvalidTurnaroundTimeException('Turnaround time is less than 0');
-        }
+        $this->submitDay = (new SubmitDayValidator)->validate($submitDay);
+        $this->turnaroundHours = (new TurnaroundTimeValidator())->validate($turnaroundHours);
+
 
         $addedDays = floor($this->turnaroundHours / 8);
         $addedHours = $this->turnaroundHours % 8;

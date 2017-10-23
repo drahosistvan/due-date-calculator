@@ -4,5 +4,5 @@ namespace DueDateCalculator\Contracts\Validation;
 
 interface Validator
 {
-    public function validate();
+    public function validate($validationString);
 }
