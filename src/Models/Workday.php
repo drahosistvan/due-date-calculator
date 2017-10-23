@@ -6,21 +6,29 @@ use Carbon\Carbon;
 
 class Workday
 {
-    private $workday;
+    const WORK_START = 9;
+    const WORK_END = 17;
 
+    private $workday;
+    private $hoursPerDay;
 
     public function __construct(Carbon $workday)
     {
         $this->workday = $workday;
+        $this->hoursPerDay = $this::WORK_END - $this::WORK_START;
     }
 
     public function addWorkingHours($workingHours)
     {
-        $addedDays = floor($workingHours / 8);
-        $addedHours = $workingHours % 8;
+        /* First we add full workdays */
+        $this->addDays(floor($workingHours / $this->hoursPerDay));
+        /* Then we add the rest hours */
+        $this->addHours($workingHours % $this->hoursPerDay);
+    }
 
-        $this->addDays($addedDays);
-        $this->addHours($addedHours);
+    public function get()
+    {
+        return $this->workday->format('Y-m-d H:i:s');
     }
 
     private function addDays($numberOfDays)
@@ -30,16 +38,19 @@ class Workday
 
     private function addHours($numberOfHours)
     {
-        if ($leftHours = ($numberOfHours - (17 - $this->workday->hour)) <= 0) {
+        $leftHours = $this->calculateLeftHours($numberOfHours);
+
+        if ($leftHours <= 0) {
             $this->workday->addHours($numberOfHours);
-        } else {
-            $this->workday->addWeekday()->hour = 9;
-            $this->workday->addHours($leftHours);
+            return true;
         }
+
+        $this->workday->addWeekday()->hour = $this::WORK_START;
+        $this->workday->addHours($leftHours);
     }
 
-    public function get()
+    private function calculateLeftHours($numberOfHours)
     {
-        return $this->workday->format('Y-m-d H:i:s');
+        return $numberOfHours - ($this::WORK_END - $this->workday->hour);
     }
 }
