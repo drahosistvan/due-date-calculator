@@ -6,29 +6,27 @@ use DueDateCalculator\Validation\TurnaroundTimeValidator;
 
 class DueDateCalculator
 {
-    private $submitDay;
+    private $workday;
     private $turnaroundHours;
 
     public function calculate($submitDay, $turnaroundHours)
     {
-        $this->submitDay = (new SubmitDayValidator)->validate($submitDay);
+        $this->workday = (new SubmitDayValidator)->validate($submitDay);
         $this->turnaroundHours = (new TurnaroundTimeValidator())->validate($turnaroundHours);
 
 
         $addedDays = floor($this->turnaroundHours / 8);
         $addedHours = $this->turnaroundHours % 8;
 
-        $this->submitDay->addWeekdays($addedDays);
+        $this->workday->addWeekdays($addedDays);
 
-        if ( $leftHours = ($addedDays - (17 - $this->submitDay->hour)) <= 0) {
-            $this->submitDay->addHours($addedHours);
+        if ( $leftHours = ($addedDays - (17 - $this->workday->hour)) <= 0) {
+            $this->workday->addHours($addedHours);
         } else {
-            $this->submitDay->addWeekday()->hour = 9;
-            $this->submitDay->addHours($leftHours);
+            $this->workday->addWeekday()->hour = 9;
+            $this->workday->addHours($leftHours);
         }
 
-        return $this->submitDay->format('Y-m-d H:i:s');
+        return $this->workday->format('Y-m-d H:i:s');
     }
-
-
 }
