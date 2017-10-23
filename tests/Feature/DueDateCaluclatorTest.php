@@ -5,6 +5,7 @@ use DueDateCalculator\Exceptions\Validation\InvalidDateFormatException;
 use DueDateCalculator\Exceptions\Validation\InvalidWorkdayDateException;
 use DueDateCalculator\Exceptions\Validation\InvalidTurnaroundTimeException;
 
+
 class DueDateCalculatorTest extends PHPUnit_Framework_TestCase
 {
     /** @test */
@@ -52,41 +53,23 @@ class DueDateCalculatorTest extends PHPUnit_Framework_TestCase
         (new DueDateCalculator())->calculate('2017-10-23 15:00:00', -1);
     }
 
-    /** @test */
-    public function calculator_can_calculate_with_days()
-    {
-        $this->assertEquals(
-            '2017-10-30 15:00:00',
-            (new DueDateCalculator())->calculate('2017-10-27 15:00:00', 8)
-        );
-
-        $this->assertEquals(
-            '2017-10-31 15:00:00',
-            (new DueDateCalculator())->calculate('2017-10-27 15:00:00', 16)
-        );
-
-        $this->assertEquals(
-            '2017-11-01 15:00:00',
-            (new DueDateCalculator())->calculate('2017-10-30 15:00:00', 16)
-        );
+    public function calculator_data_provider(){
+        return [
+            ['2017-10-30 15:00:00','2017-10-27 15:00:00', 8],
+            ['2017-10-31 15:00:00','2017-10-27 15:00:00', 16],
+            ['2017-11-01 15:00:00','2017-10-30 15:00:00', 16],
+            ['2017-10-30 16:00:00','2017-10-27 15:00:00', 9],
+            ['2017-10-31 10:45:00','2017-10-27 10:45:00', 16],
+            ['2017-11-01 13:33:00','2017-10-30 09:33:00', 20]
+        ];
     }
 
-    /** @test */
-    public function calculator_can_calculate_with_days_and_hours()
+    /**
+     * @test
+     * @dataProvider calculator_data_provider
+     */
+    public function calculator_can_calculate($expected, $submitDay, $turnaroundHours)
     {
-        $this->assertEquals(
-            '2017-10-30 16:00:00',
-            (new DueDateCalculator())->calculate('2017-10-27 15:00:00', 9)
-        );
-
-        $this->assertEquals(
-            '2017-10-31 10:45:00',
-            (new DueDateCalculator())->calculate('2017-10-27 10:45:00', 16)
-        );
-
-        $this->assertEquals(
-            '2017-11-01 13:33:00',
-            (new DueDateCalculator())->calculate('2017-10-30 09:33:00', 20)
-        );
+        $this->assertEquals($expected, (new DueDateCalculator())->calculate($submitDay, $turnaroundHours));
     }
 }
