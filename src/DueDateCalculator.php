@@ -1,4 +1,5 @@
 <?php
+
 namespace DueDateCalculator;
 
 use DueDateCalculator\Models\Workday;

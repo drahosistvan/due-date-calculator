@@ -3,20 +3,22 @@
 namespace DueDateCalculator;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 
 class DueDateCalculatorCommand extends Command
 {
-    protected function configure(){
+    protected function configure()
+    {
         $this->setName("duedate:calculate")
             ->setDescription("Calculate Due Date")
             ->addArgument('Submit day', InputArgument::REQUIRED, 'Date in YYYY-MM-DD HH:MM:SS format')
             ->addArgument('Turnaround time', InputArgument::REQUIRED, 'Number, represents the hour');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output){
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
         $calculator = new DueDateCalculator();
         $submitDate = $input->getArgument('Submit day');

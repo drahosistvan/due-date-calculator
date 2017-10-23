@@ -9,7 +9,7 @@ use DueDateCalculator\Exceptions\Validation\InvalidTurnaroundTimeException;
 class DueDateCalculatorTest extends PHPUnit_Framework_TestCase
 {
     /** @test */
-	public function calculator_has_calculate_method()
+    public function calculator_has_calculate_method()
     {
         $calculator = new DueDateCalculator();
         $this->assertTrue(
@@ -53,14 +53,15 @@ class DueDateCalculatorTest extends PHPUnit_Framework_TestCase
         (new DueDateCalculator())->calculate('2017-10-23 15:00:00', -1);
     }
 
-    public function calculator_data_provider(){
+    public function calculator_data_provider()
+    {
         return [
-            ['2017-10-30 15:00:00','2017-10-27 15:00:00', 8],
-            ['2017-10-31 15:00:00','2017-10-27 15:00:00', 16],
-            ['2017-11-01 15:00:00','2017-10-30 15:00:00', 16],
-            ['2017-10-30 16:00:00','2017-10-27 15:00:00', 9],
-            ['2017-10-31 10:45:00','2017-10-27 10:45:00', 16],
-            ['2017-11-01 13:33:00','2017-10-30 09:33:00', 20]
+            ['2017-10-30 15:00:00', '2017-10-27 15:00:00', 8],
+            ['2017-10-31 15:00:00', '2017-10-27 15:00:00', 16],
+            ['2017-11-01 15:00:00', '2017-10-30 15:00:00', 16],
+            ['2017-10-30 16:00:00', '2017-10-27 15:00:00', 9],
+            ['2017-10-31 10:45:00', '2017-10-27 10:45:00', 16],
+            ['2017-11-01 13:33:00', '2017-10-30 09:33:00', 20]
         ];
     }
 

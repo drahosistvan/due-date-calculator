@@ -1,4 +1,5 @@
 <?php
+
 namespace DueDateCalculator\Contracts\Validation;
 
 
