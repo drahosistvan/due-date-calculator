@@ -40,7 +40,7 @@ class Workday
     {
         $leftHours = $this->calculateLeftHours($numberOfHours);
 
-        if ($leftHours <= 0) {
+        if ($leftHours < 0) {
             $this->workday->addHours($numberOfHours);
             return true;
         }
